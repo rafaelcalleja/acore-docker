@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  ac-worldserver:
+    volumes:
+      - ./conf/worldserver.conf:/azerothcore/env/dist/etc/worldserver.conf
+
+  #=======================
+  #
+  # API Rest Services
+  #
+  #=======================
+
+  ac-api-rest:
+    networks:
+      - ac-network
+    image: rafaelcalleja/azerothcore-rest-api:0.0.1
+    ports:
+      - ${DOCKER_AC_EXTERNAL_HTTP_PORT:-8080}:8080
+    environment:
+      HTTP_PORT: ${HTTP_PORT:-8080}
+      GUNICORN_BIND_ADDRESS: ${GUNICORN_BIND_ADDRESS:-0.0.0.0:8080}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-360}
+      GM_USERNAME: ${GM_USERNAME:?Required GM_USERNAME}
+      GM_PASSWORD: ${GM_USERNAME:?Required GM_PASSWORD}
+      AZEROTHCORE_REMOTE_ADDRESS: ${AZEROTHCORE_REMOTE_ADDRESS:-"http://ac-worldserver:7878"}
+    restart: on-failure
+    depends_on:
+      ac-worldserver:
+        condition: service_started
+      ac-database:
+        condition: service_healthy
+
+  ac-modules-enable:
+    image: mysql:8.0
+    command: >
+      bash -c "
+        
+        echo 'wait for db'
+        while ! mysqladmin ping --host=ac-database --user=root --password='$${MYSQL_ROOT_PASSWORD}' --silent; do
+          sleep 1;
+        done;
+        echo 'do init scripts'
+        set -x;
+        echo $${MYSQL_ROOT_PASSWORD}
+        for script in $$(find /tmp/lua -name "up.sql"); do mysql --host=ac-database --user=root --password='$${MYSQL_ROOT_PASSWORD}' < $$script; done
+      "
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DOCKER_DB_ROOT_PASSWORD:-password}
+    networks:
+      - ac-network
+    working_dir: /azerothcore
+    depends_on:
+      ac-database:
+        condition: service_healthy
+    volumes:
+      - ./scripts/lua:/tmp/lua
