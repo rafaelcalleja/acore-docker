@@ -31,28 +31,3 @@ services:
         condition: service_started
       ac-database:
         condition: service_healthy
-
-  ac-modules-enable:
-    image: mysql:8.0
-    command: >
-      bash -c "
-        
-        echo 'wait for db'
-        while ! mysqladmin ping --host=ac-database --user=root --password='$${MYSQL_ROOT_PASSWORD}' --silent; do
-          sleep 1;
-        done;
-        echo 'do init scripts'
-        set -x;
-        echo $${MYSQL_ROOT_PASSWORD}
-        for script in $$(find /tmp/lua -name "up.sql"); do mysql --host=ac-database --user=root --password='$${MYSQL_ROOT_PASSWORD}' < $$script; done
-      "
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DOCKER_DB_ROOT_PASSWORD:-password}
-    networks:
-      - ac-network
-    working_dir: /azerothcore
-    depends_on:
-      ac-database:
-        condition: service_healthy
-    volumes:
-      - ./scripts/lua:/tmp/lua
