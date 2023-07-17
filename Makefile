@@ -1,4 +1,4 @@
-MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer
+MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals
 ACTION ?= up
 
 DATABASE_CONTAINER := ac-database
@@ -9,6 +9,9 @@ TARGET_PART := $(subst _, ,$(MAKECMDGOALS))
 help: ## Prints this help
 	@VAR=$$(echo $(MAKEFILE_LIST)|xargs -n1 grep -E '^[^.]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'); \
 	echo "$$VAR"|sort|uniq;
+
+restart: ## Start/Restart Server
+	@$(DOCKER_COMPOSE) up -d --force-recreate
 
 install: $(MODULES) ## [module_name] Run the SQL of all modules to activate it
 
