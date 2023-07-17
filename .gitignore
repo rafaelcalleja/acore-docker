@@ -13,6 +13,7 @@
 /conf/*
 !/conf/dist
 
+.env
 !.gitkeep
 
 npm_modules
