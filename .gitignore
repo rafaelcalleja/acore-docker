@@ -1,7 +1,6 @@
-/docker-compose.override.yml
 /scripts/*
 !/scripts/*/
-/scripts/*/*
+/scripts/typescript/*
 !/scripts/*/.gitkeep
 !/scripts/typescript/examples
 !/scripts/typescript/tsconfig.json
@@ -13,8 +12,6 @@
 !/var/shared/.gitkeep
 /conf/*
 !/conf/dist
-
-/.env
 
 !.gitkeep
 
