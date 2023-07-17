@@ -1,4 +1,4 @@
-MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead
+MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer
 ACTION ?= up
 
 DATABASE_CONTAINER := ac-database
