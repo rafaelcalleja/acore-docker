@@ -1,4 +1,6 @@
-MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals
+DOCKER_IMAGE ?= rafaelcalleja/ac-wotlk-worldserver:0.0.1
+
+MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals auctionhousebot
 ACTION ?= up
 
 DATABASE_CONTAINER := ac-database
@@ -29,3 +31,6 @@ uninstall: $(MODULES)
 .PHONY: database_up
 database_up: ## up the database service
 	$(DOCKER_COMPOSE) up -d $(DATABASE_CONTAINER)
+
+build:
+	docker build -t $(DOCKER_IMAGE)	-f docker/worldserver/Dockerfile .
