@@ -1,10 +1,10 @@
-DOCKER_VERSION ?= 0.0.3
+DOCKER_VERSION ?= 0.0.4
 DOCKER_IMAGE ?= rafaelcalleja/ac-wotlk-worldserver:$(DOCKER_VERSION)
 MYSQL_USER ?= root
 MYSQL_PASSWORD ?= password
 SQL_FOLDERS := world characters auth
 
-MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals auctionhousebot globalchat
+MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals auctionhousebot globalchat buff_command
 ACTION ?= up
 
 DATABASE_CONTAINER := ac-database
