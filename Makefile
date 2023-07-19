@@ -41,5 +41,12 @@ uninstall: $(MODULES)
 database_up: ## up the database service
 	$(DOCKER_COMPOSE) up -d $(DATABASE_CONTAINER)
 
+.PHONY: build
 build: ## compile azerothcore world server and build docker image
 	docker build -t $(DOCKER_IMAGE)	-f docker/worldserver/Dockerfile .
+
+.PHONY: backup
+backup: ## create mysql backup
+	@$(DOCKER_COMPOSE) exec $(DATABASE_CONTAINER) bash -c "mysqldump -u$(MYSQL_USER) -p$(MYSQL_PASSWORD) --all-databases > /tmp/backup.sql" && \
+	$(DOCKER_COMPOSE) cp $(DATABASE_CONTAINER):/tmp/backup.sql backup/backup.sql && \
+	mv backup/backup.sql  backup/backup_$$(date +%Y%m%d).sql
