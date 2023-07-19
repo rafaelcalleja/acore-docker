@@ -11,7 +11,6 @@ ACTION ?= up
 
 DATABASE_CONTAINER := ac-database
 DOCKER_COMPOSE := docker compose
-TARGET_PART := $(subst _, ,$(MAKECMDGOALS))
 
 .PHONY: help
 help: ## Prints this help
