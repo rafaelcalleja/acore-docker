@@ -17,4 +17,5 @@
 
 npm_modules
 .idea
+backup/*.sql
 
