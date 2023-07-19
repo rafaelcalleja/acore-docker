@@ -41,5 +41,5 @@ uninstall: $(MODULES)
 database_up: ## up the database service
 	$(DOCKER_COMPOSE) up -d $(DATABASE_CONTAINER)
 
-build:
+build: ## compile azerothcore world server and build docker image
 	docker build -t $(DOCKER_IMAGE)	-f docker/worldserver/Dockerfile .
