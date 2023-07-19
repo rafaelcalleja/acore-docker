@@ -18,6 +18,9 @@ RUN cd /azerothcore/modules && \
 RUN cd /azerothcore/modules && \
     git clone https://github.com/azerothcore/mod-buff-command
 
+RUN cd /azerothcore/modules && \
+    git clone https://github.com/noisiver/mod-assistant
+
 WORKDIR /azerothcore
 RUN ./acore.sh compiler build
 
