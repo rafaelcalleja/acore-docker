@@ -1,6 +1,6 @@
 -include .env
 export
-DOCKER_VERSION ?= 0.0.5
+DOCKER_VERSION ?= 0.0.6
 DOCKER_IMAGE ?= rafaelcalleja/ac-wotlk-worldserver:$(DOCKER_VERSION)
 MYSQL_USER ?= root
 MYSQL_PASSWORD ?= password

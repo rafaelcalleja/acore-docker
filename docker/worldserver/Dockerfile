@@ -6,32 +6,33 @@ ENV OSDISTRO Ubuntu
 
 COPY .github/config.sh config.sh
 
-RUN cd /azerothcore/modules && \
-    git clone https://github.com/azerothcore/mod-ah-bot
+WORKDIR /azerothcore/modules
 
-RUN cd /azerothcore/modules && \
-    git clone https://github.com/Gozzim/mod-globalchat
+RUN git clone https://github.com/azerothcore/mod-eluna
 
-RUN cd /azerothcore/modules && \
-    git clone https://github.com/azerothcore/mod-solo-lfg
+RUN git clone https://github.com/azerothcore/mod-ah-bot
 
-RUN cd /azerothcore/modules && \
-    git clone https://github.com/azerothcore/mod-buff-command
+RUN git clone https://github.com/Gozzim/mod-globalchat
 
-RUN cd /azerothcore/modules && \
-    git clone https://github.com/noisiver/mod-assistant
+RUN git clone https://github.com/azerothcore/mod-solo-lfg
+
+RUN git clone https://github.com/azerothcore/mod-buff-command
+
+RUN git clone https://github.com/noisiver/mod-assistant
 
 WORKDIR /azerothcore
 RUN ./acore.sh compiler build
 
 FROM acore/ac-wotlk-worldserver:7.0.0-dev.1
 
-COPY --from=compiler /azerothcore/acore.json acore.json
-COPY --from=compiler /azerothcore/acore.sh acore.sh
-COPY --from=compiler /azerothcore/apps apps
-COPY --from=compiler /azerothcore/bin bin
-COPY --from=compiler /azerothcore/conf conf
-COPY --from=compiler /azerothcore/data data
-COPY --from=compiler /azerothcore/deps deps
-COPY --from=compiler /azerothcore/env env
-COPY --from=compiler /azerothcore/var var
+USER acore
+
+COPY --from=compiler --chown=acore:acore /azerothcore/acore.json acore.json
+COPY --from=compiler --chown=acore:acore /azerothcore/acore.sh acore.sh
+COPY --from=compiler --chown=acore:acore /azerothcore/apps apps
+COPY --from=compiler --chown=acore:acore /azerothcore/bin bin
+COPY --from=compiler --chown=acore:acore /azerothcore/conf conf
+COPY --from=compiler --chown=acore:acore /azerothcore/data data
+COPY --from=compiler --chown=acore:acore /azerothcore/deps deps
+COPY --from=compiler --chown=acore:acore /azerothcore/env env
+COPY --from=compiler --chown=acore:acore /azerothcore/var var
