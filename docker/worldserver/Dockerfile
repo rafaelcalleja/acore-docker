@@ -6,10 +6,14 @@ ENV OSDISTRO Ubuntu
 
 COPY .github/config.sh config.sh
 
-RUN cd modules && \
-    git clone https://github.com/azerothcore/mod-ah-bot && \
-    cd /azerothcore && \
-    ./acore.sh compiler build
+RUN cd /azerothcore/modules && \
+    git clone https://github.com/azerothcore/mod-ah-bot
+
+RUN cd /azerothcore/modules && \
+    git clone https://github.com/Gozzim/mod-globalchat
+
+WORKDIR /azerothcore
+RUN ./acore.sh compiler build
 
 FROM acore/ac-wotlk-worldserver:7.0.0-dev.1
 

@@ -2,10 +2,11 @@ version: '3.9'
 
 services:
   ac-worldserver:
-    image: rafaelcalleja/ac-wotlk-worldserver:0.0.1
+    image: rafaelcalleja/ac-wotlk-worldserver:0.0.2
     volumes:
       - ./conf/worldserver.conf:/azerothcore/env/dist/etc/worldserver.conf
       - ./conf/mod_ahbot.conf:/azerothcore/env/dist/etc/modules/mod_ahbot.conf.dist
+      - ./conf/globalchat.conf:/azerothcore/env/dist/etc/modules/globalchat.conf.dist
 
   #=======================
   #
