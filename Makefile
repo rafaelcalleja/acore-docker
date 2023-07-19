@@ -1,4 +1,4 @@
-DOCKER_VERSION ?= 0.0.2
+DOCKER_VERSION ?= 0.0.3
 DOCKER_IMAGE ?= rafaelcalleja/ac-wotlk-worldserver:$(DOCKER_VERSION)
 MYSQL_USER ?= root
 MYSQL_PASSWORD ?= password
