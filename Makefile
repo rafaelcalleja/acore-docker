@@ -17,9 +17,11 @@ help: ## Prints this help
 	@VAR=$$(echo $(MAKEFILE_LIST)|xargs -n1 grep -E '^[^.]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'); \
 	echo "$$VAR"|sort|uniq;
 
+.PHONY: restart
 restart: ## Start/Restart Server
 	@$(DOCKER_COMPOSE) up -d --force-recreate
 
+.PHONY: install
 install: $(MODULES) ## [module_name] Run the SQL of all modules to activate it
 
 .PHONY: $(MODULES)
@@ -34,6 +36,7 @@ $(MODULES): database_up ## Run the SQL of a module to activate it
 		done; \
 	done
 
+.PHONY: uninstall
 uninstall: database_up ## Run the SQL of all modules in the container to deactivate the module
 uninstall: ACTION=down
 uninstall: $(MODULES)
