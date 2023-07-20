@@ -20,6 +20,8 @@ RUN git clone https://github.com/azerothcore/mod-buff-command
 
 RUN git clone https://github.com/noisiver/mod-assistant
 
+RUN git clone https://github.com/heyitsbench/mod-ptr-template
+
 WORKDIR /azerothcore
 RUN ./acore.sh compiler build
 
