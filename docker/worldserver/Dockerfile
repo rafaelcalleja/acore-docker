@@ -2,6 +2,16 @@ FROM acore/ac-wotlk-dev-server:7.0.0-dev.1 as compiler
 
 USER root
 
+RUN apt update && apt install -yq libboost-thread1.7*-dev
+
+USER acore
+
+WORKDIR /azerothcore
+
+RUN git config --unset http.https://github.com/.extraheader && \
+    git remote add playerbots -t Playerbot https://github.com/ZhengPeiRu21/azerothcore-wotlk.git -f && \
+    git checkout playerbots/Playerbot -b Playerbot
+
 ENV OSDISTRO Ubuntu
 
 COPY .github/config.sh config.sh
@@ -22,10 +32,17 @@ RUN git clone https://github.com/noisiver/mod-assistant
 
 RUN git clone https://github.com/heyitsbench/mod-ptr-template
 
+RUN git clone https://github.com/ZhengPeiRu21/mod-playerbots
+
 WORKDIR /azerothcore
-RUN ./acore.sh compiler build
+RUN git config --global --add safe.directory /azerothcore && \
+    ./acore.sh compiler build
 
 FROM acore/ac-wotlk-worldserver:7.0.0-dev.1
+
+USER root
+
+RUN apt-get update && apt-get install -y libboost-thread1.7*-dev && rm -rf /var/lib/apt/lists/*
 
 USER acore
 

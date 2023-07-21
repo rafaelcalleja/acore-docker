@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `mod_ptrtemplate_locale`;
 DROP TABLE IF EXISTS `mod_ptrtemplate_achievements`;
 DROP TABLE IF EXISTS `mod_ptrtemplate_action`;
 DROP TABLE IF EXISTS `mod_ptrtemplate_index`;

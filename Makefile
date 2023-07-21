@@ -1,12 +1,12 @@
 -include .env
 export
-DOCKER_VERSION ?= 0.0.7
+DOCKER_VERSION ?= 0.0.8
 DOCKER_IMAGE ?= rafaelcalleja/ac-wotlk-worldserver:$(DOCKER_VERSION)
 MYSQL_USER ?= root
 MYSQL_PASSWORD ?= password
-SQL_FOLDERS := world characters auth
+SQL_FOLDERS := world characters auth playerbots
 
-MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals auctionhousebot globalchat buff_command assistant ptr_template
+MODULES ?= npc_enchanter npc_quest_dk npc_trainer npc_weapons wowhead npc_class_trainer all_portals auctionhousebot globalchat buff_command assistant ptr_template playerbots
 ACTION ?= up
 
 DATABASE_CONTAINER := ac-database
@@ -55,3 +55,10 @@ backup: ## create mysql backup
 	@$(DOCKER_COMPOSE) exec $(DATABASE_CONTAINER) bash -c "mysqldump -u$(MYSQL_USER) -p$(MYSQL_PASSWORD) --all-databases > /tmp/backup.sql" && \
 	$(DOCKER_COMPOSE) cp $(DATABASE_CONTAINER):/tmp/backup.sql backup/backup.sql && \
 	mv backup/backup.sql  backup/backup_$$(date +%Y%m%d).sql
+
+.PHONY: restore
+restore: ## restore mysql backup from BACKUP_FILE environment varialbe
+	@if [ -z "$(BACKUP_FILE)" ]; then echo "BACKUP_FILE is not set."; exit 1; fi; \
+	$(DOCKER_COMPOSE) cp $(BACKUP_FILE) $(DATABASE_CONTAINER):/tmp/backup.sql && \
+	$(DOCKER_COMPOSE) exec $(DATABASE_CONTAINER) bash -c "mysql -u$(MYSQL_USER) -p$(MYSQL_PASSWORD) < tmp/backup.sql" && \
+	$(DOCKER_COMPOSE) exec $(DATABASE_CONTAINER) rm /tmp/backup.sql
