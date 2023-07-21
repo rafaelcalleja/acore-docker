@@ -57,7 +57,7 @@ backup: ## create mysql backup
 	mv backup/backup.sql  backup/backup_$$(date +%Y%m%d).sql
 
 .PHONY: restore
-restore: ## restore mysql backup from BACKUP_FILE environment varialbe
+restore: ## restore mysql backup from BACKUP_FILE environment variable
 	@if [ -z "$(BACKUP_FILE)" ]; then echo "BACKUP_FILE is not set."; exit 1; fi; \
 	$(DOCKER_COMPOSE) cp $(BACKUP_FILE) $(DATABASE_CONTAINER):/tmp/backup.sql && \
 	$(DOCKER_COMPOSE) exec $(DATABASE_CONTAINER) bash -c "mysql -u$(MYSQL_USER) -p$(MYSQL_PASSWORD) < tmp/backup.sql" && \
