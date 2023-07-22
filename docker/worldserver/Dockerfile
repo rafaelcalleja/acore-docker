@@ -1,16 +1,12 @@
 FROM acore/ac-wotlk-dev-server:7.0.0-dev.1 as compiler
 
-USER root
-
-RUN apt update && apt install -yq libboost-thread1.7*-dev
-
 USER acore
 
 WORKDIR /azerothcore
 
 RUN git config --unset http.https://github.com/.extraheader && \
-    git remote add playerbots -t Playerbot https://github.com/liyunfan1223/azerothcore-wotlk.git -f && \
-    git checkout playerbots/Playerbot -b Playerbot
+    git remote add bots -t npcbots_3.3.5 https://github.com/trickerer/AzerothCore-wotlk-with-NPCBots/ -f && \
+    git checkout bots/npcbots_3.3.5 -b npcbots_3.3.5
 
 ENV OSDISTRO Ubuntu
 
@@ -32,19 +28,11 @@ RUN git clone https://github.com/noisiver/mod-assistant
 
 RUN git clone https://github.com/heyitsbench/mod-ptr-template
 
-RUN git clone https://github.com/liyunfan1223/mod-playerbots
-
 WORKDIR /azerothcore
 RUN git config --global --add safe.directory /azerothcore && \
     ./acore.sh compiler build
 
 FROM acore/ac-wotlk-worldserver:7.0.0-dev.1
-
-USER root
-
-RUN apt-get update && apt-get install -y libboost-thread1.7*-dev && rm -rf /var/lib/apt/lists/*
-
-USER acore
 
 COPY --from=compiler --chown=acore:acore /azerothcore/acore.json acore.json
 COPY --from=compiler --chown=acore:acore /azerothcore/acore.sh acore.sh
@@ -59,4 +47,3 @@ COPY --from=compiler --chown=acore:acore /azerothcore/var var
 
 COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-buff-command/sql modules/mod-buff-command/sql
 COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-globalchat/sql modules/mod-globalchat/sql
-COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-playerbots/sql modules/mod-playerbots/sql
