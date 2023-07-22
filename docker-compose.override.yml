@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   ac-worldserver:
-    image: rafaelcalleja/ac-wotlk-worldserver:0.0.8
+    image: rafaelcalleja/ac-wotlk-worldserver:0.0.9
     volumes:
       - ./conf/worldserver.conf:/azerothcore/env/dist/etc/worldserver.conf
       - ./conf/mod_ahbot.conf:/azerothcore/env/dist/etc/modules/mod_ahbot.conf.dist
@@ -12,8 +12,6 @@ services:
       - ./conf/mod_assistant.conf:/azerothcore/env/dist/etc/modules/mod_assistant.conf.dist
       - ./conf/mod_ptr_template.conf:/azerothcore/env/dist/etc/modules/mod_ptr_template.conf.dist
       - ./conf/playerbots.conf:/azerothcore/env/dist/etc/modules/playerbots.conf.dist
-    tmpfs:
-      - /azerothcore/modules/mod-playerbots
 
   #=======================
   #
