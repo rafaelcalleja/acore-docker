@@ -9,7 +9,7 @@ USER acore
 WORKDIR /azerothcore
 
 RUN git config --unset http.https://github.com/.extraheader && \
-    git remote add playerbots -t Playerbot https://github.com/ZhengPeiRu21/azerothcore-wotlk.git -f && \
+    git remote add playerbots -t Playerbot https://github.com/liyunfan1223/azerothcore-wotlk.git -f && \
     git checkout playerbots/Playerbot -b Playerbot
 
 ENV OSDISTRO Ubuntu
@@ -32,7 +32,7 @@ RUN git clone https://github.com/noisiver/mod-assistant
 
 RUN git clone https://github.com/heyitsbench/mod-ptr-template
 
-RUN git clone https://github.com/ZhengPeiRu21/mod-playerbots
+RUN git clone https://github.com/liyunfan1223/mod-playerbots
 
 WORKDIR /azerothcore
 RUN git config --global --add safe.directory /azerothcore && \
@@ -55,3 +55,8 @@ COPY --from=compiler --chown=acore:acore /azerothcore/data data
 COPY --from=compiler --chown=acore:acore /azerothcore/deps deps
 COPY --from=compiler --chown=acore:acore /azerothcore/env env
 COPY --from=compiler --chown=acore:acore /azerothcore/var var
+COPY --from=compiler --chown=acore:acore /azerothcore/var var
+
+COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-buff-command/sql modules/mod-buff-command/sql
+COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-globalchat/sql modules/mod-globalchat/sql
+COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-playerbots/sql modules/mod-playerbots/sql
