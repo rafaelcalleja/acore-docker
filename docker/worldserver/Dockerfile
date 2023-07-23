@@ -43,7 +43,3 @@ COPY --from=compiler --chown=acore:acore /azerothcore/data data
 COPY --from=compiler --chown=acore:acore /azerothcore/deps deps
 COPY --from=compiler --chown=acore:acore /azerothcore/env env
 COPY --from=compiler --chown=acore:acore /azerothcore/var var
-COPY --from=compiler --chown=acore:acore /azerothcore/var var
-
-COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-buff-command/sql modules/mod-buff-command/sql
-COPY --from=compiler --chown=acore:acore /azerothcore/modules/mod-globalchat/sql modules/mod-globalchat/sql
