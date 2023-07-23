@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   ac-worldserver:
-    image: rafaelcalleja/ac-wotlk-worldserver:0.0.10
+    image: rafaelcalleja/ac-wotlk-worldserver:0.0.12
     volumes:
       - ./conf/worldserver.conf:/azerothcore/env/dist/etc/worldserver.conf
       - ./conf/mod_ahbot.conf:/azerothcore/env/dist/etc/modules/mod_ahbot.conf.dist
@@ -11,6 +11,7 @@ services:
       - ./conf/BuffCommand.conf:/azerothcore/env/dist/etc/modules/BuffCommand.conf.dist
       - ./conf/mod_assistant.conf:/azerothcore/env/dist/etc/modules/mod_assistant.conf.dist
       - ./conf/mod_ptr_template.conf:/azerothcore/env/dist/etc/modules/mod_ptr_template.conf.dist
+      - ./conf/GainHonorGuard.conf:/azerothcore/env/dist/etc/modules/GainHonorGuard.conf.dist
 
   #=======================
   #

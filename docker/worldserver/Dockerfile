@@ -28,6 +28,8 @@ RUN git clone https://github.com/noisiver/mod-assistant
 
 RUN git clone https://github.com/heyitsbench/mod-ptr-template
 
+RUN git clone https://github.com/azerothcore/mod-gain-honor-guard
+
 WORKDIR /azerothcore
 RUN git config --global --add safe.directory /azerothcore && \
     ./acore.sh compiler build
