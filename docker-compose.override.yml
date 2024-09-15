@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  ac-worldserver:
+    image: rafaelcalleja/ac-wotlk-worldserver:0.0.12
+    volumes:
+      - ./conf/worldserver.conf:/azerothcore/env/dist/etc/worldserver.conf
+      - ./conf/mod_ahbot.conf:/azerothcore/env/dist/etc/modules/mod_ahbot.conf.dist
+      - ./conf/globalchat.conf:/azerothcore/env/dist/etc/modules/globalchat.conf.dist
+      - ./conf/SoloLfg.conf:/azerothcore/env/dist/etc/modules/SoloLfg.conf.dist
+      - ./conf/BuffCommand.conf:/azerothcore/env/dist/etc/modules/BuffCommand.conf.dist
+      - ./conf/mod_assistant.conf:/azerothcore/env/dist/etc/modules/mod_assistant.conf.dist
+      - ./conf/mod_ptr_template.conf:/azerothcore/env/dist/etc/modules/mod_ptr_template.conf.dist
+      - ./conf/GainHonorGuard.conf:/azerothcore/env/dist/etc/modules/GainHonorGuard.conf.dist
+
+  #=======================
+  #
+  # API Rest Services
+  #
+  #=======================
+
+  ac-api-rest:
+    networks:
+      - ac-network
+    image: rafaelcalleja/azerothcore-rest-api:0.0.2
+    ports:
+      - ${DOCKER_AC_EXTERNAL_HTTP_PORT:-8080}:8080
+    environment:
+      HTTP_PORT: ${HTTP_PORT:-8080}
+      GUNICORN_BIND_ADDRESS: ${GUNICORN_BIND_ADDRESS:-0.0.0.0:8080}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-360}
+      GM_USERNAME: ${GM_USERNAME:?Required GM_USERNAME}
+      GM_PASSWORD: ${GM_USERNAME:?Required GM_PASSWORD}
+      AZEROTHCORE_REMOTE_ADDRESS: ${AZEROTHCORE_REMOTE_ADDRESS:-"http://ac-worldserver:7878"}
+    restart: on-failure
+    depends_on:
+      ac-worldserver:
+        condition: service_started
+      ac-database:
+        condition: service_healthy
